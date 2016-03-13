@@ -142,7 +142,6 @@ integer_class UnivariateIntPolynomial::max_coef() const {
 integer_class UnivariateIntPolynomial::eval(const integer_class &x) const {
     unsigned int last_deg = dict_.rbegin()->first;
     integer_class result(0), x_pow;
-
     for (auto it = dict_.rbegin(); it != dict_.rend(); ++it) {
         mp_pow_ui(x_pow, x, last_deg - (*it).first);
         last_deg = (*it).first;
@@ -157,7 +156,6 @@ integer_class UnivariateIntPolynomial::eval(const integer_class &x) const {
 integer_class UnivariateIntPolynomial::eval_bit(const int &x) const {
     unsigned int last_deg = dict_.rbegin()->first;
     integer_class result(0), two_pow;
-
     for (auto it = dict_.rbegin(); it != dict_.rend(); ++it) {
         two_pow = integer_class(1) << x * (last_deg - (*it).first);
         last_deg = (*it).first;
