@@ -6,6 +6,7 @@
 #ifndef SYMENGINE_SERIES_GENERIC_H
 #define SYMENGINE_SERIES_GENERIC_H
 
+#include <list>
 #include <symengine/polynomial.h>
 #include <symengine/rational.h>
 #include <symengine/series.h>

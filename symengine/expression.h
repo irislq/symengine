@@ -118,11 +118,6 @@ public:
         return eq(*m_basic, *other.m_basic);
     }
     
-    bool operator<(const Expression &other) const
-    {
-        return m_basic->__cmp__(*other.m_basic) == -1;
-    }
-     
     //! Overload check not equal (!=)
     bool operator!=(const Expression &other) const
     {
@@ -149,7 +144,10 @@ inline Expression coeff(const Expression &y, const Expression &x, const Expressi
     return coeff(y.get_basic(), x.get_basic(), n.get_basic());
 }
 
-std::string poly_print(const Expression &x);
+namespace detail {
+    // This function must have external linkage
+    std::string poly_print(const Expression &x);
+}
 
 } // SymEngine
 
@@ -185,7 +183,7 @@ namespace piranha {
     struct print_coefficient_impl<U, typename std::enable_if<std::is_same<U, SymEngine::Expression>::value>::type>
     {
         auto operator()(std::ostream &os, const U &cf) const -> decltype(os << cf) {
-            return os << poly_print(cf);
+            return os << SymEngine::detail::poly_print(cf);
         }
     };
 }
