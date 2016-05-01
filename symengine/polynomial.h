@@ -202,8 +202,8 @@ RCP<const UnivariatePolynomial> neg_uni_poly(const UnivariatePolynomial &a);
 RCP<const UnivariatePolynomial> sub_uni_poly(const UnivariatePolynomial &a,
                                              const UnivariatePolynomial &b);
 //! Multiplying two UnivariatePolynomial a and b
-RCP<const UnivariatePolynomial> mul_uni_poly(RCP<const UnivariatePolynomial> a,
-                                             RCP<const UnivariatePolynomial> b);
+RCP<const UnivariatePolynomial> mul_uni_poly(const UnivariatePolynomial &a,
+                                             const UnivariatePolynomial &b);
 
 inline RCP<const UnivariatePolynomial>
 univariate_polynomial(RCP<const Symbol> i, map_int_Expr &&dict)
@@ -307,25 +307,25 @@ public:
     friend UnivariateExprPolynomial operator*(const UnivariateExprPolynomial &a,
                                               const UnivariateExprPolynomial &b)
     {
-        return UnivariateExprPolynomial(mul_uni_poly(a.poly_, b.poly_));
+        return UnivariateExprPolynomial(mul_uni_poly(*a.poly_, *b.poly_));
     }
 
     friend UnivariateExprPolynomial operator/(const UnivariateExprPolynomial &a,
                                               const Expression &b)
     {
         return UnivariateExprPolynomial(
-            mul_uni_poly(a.poly_, UnivariateExprPolynomial(1 / b).poly_));
+            mul_uni_poly(*a.poly_, *UnivariateExprPolynomial(1 / b).poly_));
     }
 
     UnivariateExprPolynomial &operator*=(const UnivariateExprPolynomial &other)
     {
-        poly_ = mul_uni_poly(poly_, other.poly_);
+        poly_ = mul_uni_poly(*poly_, *other.poly_);
         return *this;
     }
 
     UnivariateExprPolynomial &operator/=(const Expression &other)
     {
-        poly_ = mul_uni_poly(poly_, UnivariateExprPolynomial(1 / other).poly_);
+        poly_ = mul_uni_poly(*poly_, *UnivariateExprPolynomial(1 / other).poly_);
         return *this;
     }
 

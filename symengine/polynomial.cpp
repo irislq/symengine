@@ -604,26 +604,26 @@ RCP<const UnivariatePolynomial> sub_uni_poly(const UnivariatePolynomial &a,
     return univariate_polynomial(var, std::move(dict));
 }
 
-RCP<const UnivariatePolynomial> mul_uni_poly(RCP<const UnivariatePolynomial> a,
-                                             RCP<const UnivariatePolynomial> b)
+RCP<const UnivariatePolynomial> mul_uni_poly(const UnivariatePolynomial &a,
+                                             const UnivariatePolynomial &b)
 {
     map_int_Expr dict;
     RCP<const Symbol> var = symbol("");
-    if (a->get_var()->get_name() == "") {
-        var = b->get_var();
-    } else if (b->get_var()->get_name() == "") {
-        var = a->get_var();
-    } else if (!(a->get_var()->__eq__(*b->get_var()))) {
+    if (a.get_var()->get_name() == "") {
+        var = b.get_var();
+    } else if (b.get_var()->get_name() == "") {
+        var = a.get_var();
+    } else if (!(a.get_var()->__eq__(*b.get_var()))) {
         throw std::runtime_error("Error: variables must agree.");
     } else {
-        var = a->get_var();
+        var = a.get_var();
     }
 
-    if (a->get_dict().empty() and b->get_dict().empty())
+    if (a.get_dict().empty() and b.get_dict().empty())
         return univariate_polynomial(var, {{0, 0}});
 
-    for (const auto &i1 : a->get_dict())
-        for (const auto &i2 : b->get_dict())
+    for (const auto &i1 : a.get_dict())
+        for (const auto &i2 : b.get_dict())
             dict[i1.first + i2.first] += i1.second * i2.second;
     return univariate_polynomial(var, std::move(dict));
 }
