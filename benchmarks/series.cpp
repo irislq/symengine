@@ -32,14 +32,14 @@ int main(int argc, char *argv[])
 
     UnivariateExprPolynomial c, p(UnivariatePolynomial::create(x, v));
     auto t1 = std::chrono::high_resolution_clock::now();
-    c = UnivariateSeries::mul(p, p, 1000);
+    c = UnivariateSeries::mul2(p, p, 1000);
     auto t2 = std::chrono::high_resolution_clock::now();
     // std::cout << *a << std::endl;
     std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                      .count()
               << "ms" << std::endl;
 
-
+    /*
     auto arg = add(x, pow(x, integer(2)));
     auto ex = mul(sin(arg), cos(arg));
     std::cout << "Expanding: " << *ex << std::endl;
@@ -50,6 +50,6 @@ int main(int argc, char *argv[])
     // std::cout << *res[N-1] << std::endl;
     std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                      .count()
-              << "ms" << std::endl;
+              << "ms" << std::endl;*/
     return 0;
 }

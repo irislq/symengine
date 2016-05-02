@@ -51,6 +51,9 @@ public:
     static UnivariateExprPolynomial mul(const UnivariateExprPolynomial &s,
                                         const UnivariateExprPolynomial &r,
                                         unsigned prec);
+    static UnivariateExprPolynomial &mul2(UnivariateExprPolynomial &res,
+                                        const UnivariateExprPolynomial &o,
+                                        unsigned prec);
     static UnivariateExprPolynomial pow(const UnivariateExprPolynomial &s,
                                         int n, unsigned prec);
     static Expression find_cf(const UnivariateExprPolynomial &s,
