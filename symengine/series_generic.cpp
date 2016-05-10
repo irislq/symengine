@@ -94,25 +94,31 @@ UnivariateSeries::mul(const UnivariateExprPolynomial &a,
             a.get_univariate_poly()->get_var(), std::move(p)));
 }
 
-UnivariateExprPolynomial&
+void
 UnivariateSeries::mul2(UnivariateExprPolynomial &res,
                       const UnivariateExprPolynomial &o, unsigned prec)
 {
-    map_int_Expr dict;
-    for (auto &it1 : res.poly_->dict_) {
+    map_int_Expr p;
+    for (auto &it1 : res.get_univariate_poly()->get_dict()) {
         for (auto &it2 : o.get_univariate_poly()->get_dict()) {
             int exp = it1.first + it2.first;
             if (exp < (int)prec) {
-                dict[exp] += it1.second * it2.second;
+                p[exp] += it1.second * it2.second;
             } else {
                 break;
             }
         }
     }
     if (res.get_univariate_poly()->get_var()->get_name() == "")
-        ;//res.poly_->var_ = symbol(o.get_univariate_poly()->get_var()->get_name());
+        rcp_static_cast< const Symbol>(res.poly_->var_) = o.get_univariate_poly()->get_var();
 
-    return res;
+    // const_cast<map_int_Expr &>(res.poly_->dict_).clear();
+    const_cast<map_int_Expr &>(res.poly_->dict_) = p;
+    // return res;
+    if (!p.empty())
+        const_cast<int &>(res.poly_->degree_) = (--(p.end()))->first;
+    else
+        const_cast<int &>(res.poly_->degree_) = 0;
 }
 
 UnivariateExprPolynomial
@@ -141,13 +147,18 @@ UnivariateSeries::pow(const UnivariateExprPolynomial &base, int exp,
     while (exp > 1) {
         if (exp % 2 == 0) {
             x = mul(x, x, prec);
+            // mul2(x, x, prec);
             exp /= 2;
         } else {
             y = mul(x, y, prec);
             x = mul(x, x, prec);
+            // mul2(y, x, prec);
+            // mul2(x, x, prec);
             exp = (exp - 1) / 2;
         }
     }
+    // mul2(x, y, prec);
+    // return x;
     return mul(x, y, prec);
 }
 

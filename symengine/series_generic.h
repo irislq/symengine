@@ -51,7 +51,7 @@ public:
     static UnivariateExprPolynomial mul(const UnivariateExprPolynomial &s,
                                         const UnivariateExprPolynomial &r,
                                         unsigned prec);
-    static UnivariateExprPolynomial &mul2(UnivariateExprPolynomial &res,
+    static void mul2(UnivariateExprPolynomial &res,
                                         const UnivariateExprPolynomial &o,
                                         unsigned prec);
     static UnivariateExprPolynomial pow(const UnivariateExprPolynomial &s,
