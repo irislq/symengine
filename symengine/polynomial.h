@@ -137,16 +137,30 @@ public:
         SYMENGINE_NOEXCEPT : dict_(std::move(other.dict_))
     {
     }
-    UnivariateExprPolynomial(int i)
+    UnivariateExprPolynomial(const int& i)
         : dict_({{0, Expression(i)}})
     {
     }
-    UnivariateExprPolynomial(map_int_Expr p)
-        : dict_(std::move(p))
+    UnivariateExprPolynomial(const std::string& s)
+        : dict_({{1, Expression(1)}})
     {
     }
-    UnivariateExprPolynomial(Expression expr)
-        : dict_({{0, expr}})
+    UnivariateExprPolynomial(const map_int_Expr& p)
+        // : dict_(std::move(p))
+    {
+        dict_ = p;
+        auto iter = dict_.begin();
+        while (iter != dict_.end()) {
+            if (Expression(0) == iter->second) {
+                auto toErase = iter;
+                iter++;
+                dict_.erase(toErase);
+            } else
+                iter++;
+        }
+    }
+    UnivariateExprPolynomial(const Expression& expr)
+        : dict_({{0, std::move(expr)}})
     {
     }
 
@@ -260,17 +274,17 @@ public:
 
     bool operator==(const UnivariateExprPolynomial &other) const
     {
-        return map_int_Expr_compare(dict_, other.dict_);
+        return map_int_Expr_compare(dict_, other.dict_) == 0;
     }
 
     bool operator==(int i) const
     {
-        return map_int_Expr_compare(dict_, UnivariateExprPolynomial(i).dict_);
+        return map_int_Expr_compare(dict_, UnivariateExprPolynomial(i).dict_) == 0;
     }
 
     bool operator!=(const UnivariateExprPolynomial &other) const
     {
-        return not(*this == other);
+        return not(*this == other) != 0;
     }
 
     /*!
@@ -312,24 +326,30 @@ public:
         return seed;
     }
 
-    // const RCP<const Basic> get_basic() const
-    // {
-    //     RCP<const Symbol> x = poly_->get_var();
-    //     umap_basic_num dict_;
-    //     RCP<const Number> coeff;
-    //     for (const auto &it : poly_->get_dict()) {
-    //         if (it.first != 0) {
-    //             auto term = mul(
-    //                 it.second.get_basic(),
-    //                 pow_ex(Expression(x), Expression(it.first)).get_basic());
-    //             RCP<const Number> coef;
-    //             coef = zero;
-    //             Add::coef_dict_add_term(outArg((coef)), dict_, one, term);
-    //         } else
-    //             coeff = rcp_static_cast<const Number>(it.second.get_basic());
-    //     }
-    //     return Add::from_dict(coeff, std::move(dict_));
-    // }
+    const umap_int_basic get_basic() const
+    {
+        // RCP<const Symbol> x = poly_->get_var();
+        // umap_basic_num dict_;
+        // RCP<const Number> coeff;
+        // for (const auto &it : poly_->get_dict()) {
+        //     if (it.first != 0) {
+        //         auto term = mul(
+        //             it.second.get_basic(),
+        //             pow_ex(Expression(x), Expression(it.first)).get_basic());
+        //         RCP<const Number> coef;
+        //         coef = zero;
+        //         Add::coef_dict_add_term(outArg((coef)), dict_, one, term);
+        //     } else
+        //         coeff = rcp_static_cast<const Number>(it.second.get_basic());
+        // }
+        // return Add::from_dict(coeff, std::move(dict_));
+
+        umap_int_basic p;
+        for (const auto &it : dict_)
+            if (it.second != 0)
+                p[it.first] = it.second.get_basic();
+        return p;
+    }
 
     int compare(const UnivariateExprPolynomial &other)
     {

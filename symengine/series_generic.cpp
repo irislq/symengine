@@ -28,23 +28,33 @@ std::size_t UnivariateSeries::__hash__() const
 
 int UnivariateSeries::compare(const Basic &other) const
 {
-    // SYMENGINE_ASSERT(is_a<UnivariateSeries>(other))
-    // const UnivariateSeries &o = static_cast<const UnivariateSeries &>(other);
-    // return p_.get_basic()->__cmp__(*o.p_.get_basic());
-    throw std::runtime_error("Not implemented");
+    SYMENGINE_ASSERT(is_a<UnivariateSeries>(other))
+    const UnivariateSeries &o_ = static_cast<const UnivariateSeries &>(other);
+    if (p_.size() != o_.p_.size())
+        return (p_.size() < o_.p_.size()) ? -1 : 1;
+    auto p = p_.get_dict().begin();
+    auto o = o_.p_.get_dict().begin();
+    for (; p != p_.get_dict().end(); ++p, ++o) {
+        if (p->first != o->first)
+            return (p->first < o->first) ? -1 : 1;
+        if (p->second != o->second)
+            return (p->second.get_basic()->__cmp__(*o->second.get_basic())) ? -1
+                                                                            : 1;
+    }
+    return 0;
+    // return p_.get_basic().__cmp__(*o.p_.get_basic());
+    // throw std::runtime_error("compare Not implemented");
 }
 
 RCP<const Basic> UnivariateSeries::as_basic() const
 {
-    // return univariate_polynomial()
-    throw std::runtime_error("Not implemented");
+    throw std::runtime_error("as_basic Not implemented");
     // return p_.get_basic();
 }
 
 umap_int_basic UnivariateSeries::as_dict() const
 {
     umap_int_basic map;
-    // for (const auto &it : p_.get_univariate_poly()->get_dict())
     for (const auto &it : p_.get_dict())
         if (it.second != 0)
             map[it.first] = it.second.get_basic();
@@ -90,12 +100,6 @@ UnivariateSeries::mul(const UnivariateExprPolynomial &a,
         }
     }
     return UnivariateExprPolynomial(p);
-    // if (a.get_univariate_poly()->get_var()->get_name() == "")
-    //     return UnivariateExprPolynomial(UnivariatePolynomial::from_dict(
-    //         b.get_univariate_poly()->get_var(), std::move(p)));
-    // else
-    //     return UnivariateExprPolynomial(UnivariatePolynomial::from_dict(
-    //         a.get_univariate_poly()->get_var(), std::move(p)));
 }
 
 UnivariateExprPolynomial
@@ -107,11 +111,11 @@ UnivariateSeries::pow(const UnivariateExprPolynomial &base, int exp,
         map_int_Expr dict;
         dict[-(base.get_dict().begin()->first)]
             = 1 / base.get_dict().begin()->second;
-        return pow(UnivariateExprPolynomial(std::move(dict)),
+        return pow(UnivariateExprPolynomial(dict),
                    -exp, prec);
     }
     if (exp == 0) {
-        if (base == 0) {
+        if (base == 0 or base.get_dict().size() == 0) {
             throw std::runtime_error("Error: 0**0 is undefined.");
         } else {
             return UnivariateExprPolynomial(1);
@@ -152,18 +156,16 @@ UnivariateExprPolynomial
 UnivariateSeries::diff(const UnivariateExprPolynomial &s,
                        const UnivariateExprPolynomial &var)
 {
-    // RCP<const Basic> p
-    //     = s.get_univariate_poly()->diff(var.get_univariate_poly()->get_var());
-    // if (is_a<const UnivariatePolynomial>(*p))
-    //     return UnivariateExprPolynomial(
-    //         rcp_static_cast<const UnivariatePolynomial>(p));
-    // else
-    //     throw std::runtime_error("Not a UnivariatePolynomial");
-    throw std::runtime_error("Not implemented");
-    // map_int_Expr p;
-    // for (auto &i : s.get_dict())
-    //     p[i.first-1] = i.second.get_basic()->diff(symbol(get_var()));
-    // return UnivariateExprPolynomial(p);
+    if (var.get_dict().size() == 1 and var.get_dict().at(1) == Expression(1)) {
+        map_int_Expr d;
+        for (const auto &p : s.get_dict()) {
+            if (p.first != 0)
+                d[p.first - 1] = p.second * p.first;
+        }
+        return UnivariateExprPolynomial(d);
+    } else {
+        return UnivariateExprPolynomial({{0, Expression(0)}});
+    }
 }
 
 UnivariateExprPolynomial
@@ -179,8 +181,6 @@ UnivariateSeries::integrate(const UnivariateExprPolynomial &s,
             throw std::runtime_error("Not Implemented");
         }
     }
-    // return UnivariateExprPolynomial(univariate_polynomial(
-    //     var.get_univariate_poly()->get_var(), std::move(dict)));
 
     return UnivariateExprPolynomial(dict);
 }
@@ -191,7 +191,6 @@ UnivariateSeries::subs(const UnivariateExprPolynomial &s,
                        const UnivariateExprPolynomial &r, unsigned prec)
 {
     UnivariateExprPolynomial result({{1, Expression(1)}});
-        // r.get_univariate_poly()->get_var()->get_name());
 
     for (auto &i : s.get_dict())
         result += i.second * pow(r, i.first, prec);
