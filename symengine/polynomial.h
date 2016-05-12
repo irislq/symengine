@@ -138,15 +138,15 @@ public:
     {
     }
     UnivariateExprPolynomial(const int& i)
-        : dict_({{0, Expression(i)}})
     {
+        if(i != 0)
+            dict_ = {{0, Expression(i)}};
     }
     UnivariateExprPolynomial(const std::string& s)
         : dict_({{1, Expression(1)}})
     {
     }
     UnivariateExprPolynomial(const map_int_Expr& p)
-        // : dict_(std::move(p))
     {
         dict_ = p;
         auto iter = dict_.begin();
@@ -160,8 +160,9 @@ public:
         }
     }
     UnivariateExprPolynomial(const Expression& expr)
-        : dict_({{0, std::move(expr)}})
     {
+        if(expr != Expression(0))
+            dict_= {{0, std::move(expr)}};
     }
 
     UnivariateExprPolynomial &operator=(const UnivariateExprPolynomial &)

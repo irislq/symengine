@@ -368,18 +368,18 @@ TEST_CASE("Expression series expansion: atan, tan, asin, cot, sec, csc",
     auto ex9 = sec(x);
     auto ex10 = csc(x);
 
-    // auto s = UnivariateSeries::series(ex8, "x", 10);
+    auto s = UnivariateSeries::series(ex8, "x", 10);
 
-    // REQUIRE(series_coeff(ex1, x, 20, 19)->__eq__(*rational(-1, 19)));
-    // REQUIRE(series_coeff(ex2, x, 40, 33)->__eq__(*rational(65536, 33)));
-    // REQUIRE(series_coeff(ex3, x, 20, 13)->__eq__(*rational(21844, 6081075)));
-    // REQUIRE(series_coeff(ex4, x, 20, 12)->__eq__(*rational(1303712, 14175)));
-    // REQUIRE(series_coeff(ex5, x, 20, 15)->__eq__(*rational(143, 10240)));
-    // REQUIRE(series_coeff(ex6, x, 20, 16)->__eq__(*rational(1259743, 2048)));
-    // REQUIRE(expand_check_pairs(ex7, x, 5, res1));
-    // REQUIRE(expand_check_pairs(ex8, x, 10, res2));
-    // REQUIRE(series_coeff(ex9, x, 20, 8)->__eq__(*rational(277, 8064)));
-    // REQUIRE(series_coeff(ex10, x, 20, 7)->__eq__(*rational(127, 604800)));
+    REQUIRE(series_coeff(ex1, x, 20, 19)->__eq__(*rational(-1, 19)));
+    REQUIRE(series_coeff(ex2, x, 40, 33)->__eq__(*rational(65536, 33)));
+    REQUIRE(series_coeff(ex3, x, 20, 13)->__eq__(*rational(21844, 6081075)));
+    REQUIRE(series_coeff(ex4, x, 20, 12)->__eq__(*rational(1303712, 14175)));
+    REQUIRE(series_coeff(ex5, x, 20, 15)->__eq__(*rational(143, 10240)));
+    REQUIRE(series_coeff(ex6, x, 20, 16)->__eq__(*rational(1259743, 2048)));
+    REQUIRE(expand_check_pairs(ex7, x, 5, res1));
+    REQUIRE(expand_check_pairs(ex8, x, 10, res2));
+    REQUIRE(series_coeff(ex9, x, 20, 8)->__eq__(*rational(277, 8064)));
+    REQUIRE(series_coeff(ex10, x, 20, 7)->__eq__(*rational(127, 604800)));
 }
 
 TEST_CASE("Expression series expansion: sinh, cosh, tanh, asinh, atanh",

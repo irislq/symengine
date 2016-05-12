@@ -439,15 +439,6 @@ UnivariatePolynomial::from_vec(const RCP<const Symbol> &var,
 RCP<const UnivariatePolynomial>
 UnivariatePolynomial::from_dict(const RCP<const Symbol> &var, map_int_Expr &&d)
 {
-    // auto iter = d.begin();
-    // while (iter != d.end()) {
-    //     if (Expression(0) == iter->second) {
-    //         auto toErase = iter;
-    //         iter++;
-    //         d.erase(toErase);
-    //     } else
-    //         iter++;
-    // }
     int degree = 0;
     if (!d.empty())
         degree = (--(d.end()))->first;
