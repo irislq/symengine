@@ -158,7 +158,6 @@ public:
         if (this != &other)
             this->dict_ = std::move(other.dict_);
         return *this;
-
     }
 
     friend std::ostream &operator<<(std::ostream &os,
@@ -237,10 +236,19 @@ public:
         if (dict_.empty())
             return *this;
 
+        //! other is a just constant term
+        if(other.dict_.size() == 1 and other.dict_.find(0) != other.dict_.end()) {
+            for(const auto &i1 : dict_)
+                for (const auto &i2 : other.dict_)
+                    dict_[i1.first + i2.first] = i1.second * i2.second;
+            return *this;
+        }
+
+        map_int_Expr p;
         for(const auto &i1 : dict_)
             for (const auto &i2 : other.dict_)
-                dict_[i1.first + i2.first] += i1.second * i2.second;
-
+                p[i1.first + i2.first] += i1.second * i2.second;
+        *this = UnivariateExprPolynomial(p);
         return *this;
     }
 
