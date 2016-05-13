@@ -51,7 +51,8 @@ int main(int argc, char *argv[])
     c += ep;
     // d = UnivariateSeries::mul(ep, ep, 1000);
     auto t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "ep += ep " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
+    std::cout << "ep += ep "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                      .count()
               << "ms" << std::endl;
 
@@ -59,7 +60,8 @@ int main(int argc, char *argv[])
     t1 = std::chrono::high_resolution_clock::now();
     d = ep + ep;
     t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "ep + ep " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
+    std::cout << "ep + ep "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                      .count()
               << "ms" << std::endl;
 
@@ -69,7 +71,8 @@ int main(int argc, char *argv[])
     t -= ep;
     // d = UnivariateSeries::mul(ep, ep, 1000);
     t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "ep -= ep " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
+    std::cout << "ep -= ep "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                      .count()
               << "ms" << std::endl;
 
@@ -77,7 +80,8 @@ int main(int argc, char *argv[])
     t1 = std::chrono::high_resolution_clock::now();
     u = ep - ep;
     t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "ep - ep " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
+    std::cout << "ep - ep "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                      .count()
               << "ms" << std::endl;
 
@@ -85,7 +89,8 @@ int main(int argc, char *argv[])
     t1 = std::chrono::high_resolution_clock::now();
     n = -ep;
     t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "-ep " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
+    std::cout << "-ep "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                      .count()
               << "ms" << std::endl;
 
@@ -93,7 +98,8 @@ int main(int argc, char *argv[])
     t1 = std::chrono::high_resolution_clock::now();
     b = epq * epq;
     t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "epq * epq " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
+    std::cout << "epq * epq "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                      .count()
               << "ms" << std::endl;
 
@@ -102,7 +108,8 @@ int main(int argc, char *argv[])
     t1 = std::chrono::high_resolution_clock::now();
     r *= epq;
     t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "epq *= epq " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
+    std::cout << "epq *= epq "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                      .count()
               << "ms" << std::endl;
 
@@ -110,7 +117,8 @@ int main(int argc, char *argv[])
     t1 = std::chrono::high_resolution_clock::now();
     s = ep * e;
     t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "ep * e single constant " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
+    std::cout << "ep * e single constant "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                      .count()
               << "ms" << std::endl;
 
@@ -119,29 +127,33 @@ int main(int argc, char *argv[])
     t1 = std::chrono::high_resolution_clock::now();
     a *= e;
     t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "ep *= e single constant " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
+    std::cout << "ep *= e single constant "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                      .count()
               << "ms" << std::endl;
-
 
     // ep / coeff
     t1 = std::chrono::high_resolution_clock::now();
     f = a / coeff;
     t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "ep / coeff " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
+    std::cout << "ep / coeff "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                      .count()
               << "ms" << std::endl;
-    // std::cout << f.get_dict().at(0) << " + " << f.get_dict().at(1) << " + " << f.get_dict().at(2) << std::endl;
+    // std::cout << f.get_dict().at(0) << " + " << f.get_dict().at(1) << " + "
+    // << f.get_dict().at(2) << std::endl;
 
     // ep /= coeff
     g = a;
     t1 = std::chrono::high_resolution_clock::now();
     g /= coeff;
     t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "ep /= coeff " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
+    std::cout << "ep /= coeff "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                      .count()
               << "ms" << std::endl;
-    // std::cout << g.get_dict().at(0) << " + " << g.get_dict().at(1) << " + " << g.get_dict().at(2) << std::endl;
+    // std::cout << g.get_dict().at(0) << " + " << g.get_dict().at(1) << " + "
+    // << g.get_dict().at(2) << std::endl;
 
     return 0;
 }

@@ -144,7 +144,8 @@ TEST_CASE("Exponentiation of UnivariateExprPolynomial with precision",
     UnivariateExprPolynomial a({{0, 1}, {1, 2}, {2, 1}});
     UnivariateExprPolynomial b({{0, -1}, {1, -2}, {2, -1}});
     UnivariateExprPolynomial c({{0, 1}, {1, 4}, {2, 6}, {3, 4}});
-    UnivariateExprPolynomial d({{0, -1}, {1, -6}, {2, -15}, {3, -20}, {4, -15}});
+    UnivariateExprPolynomial d(
+        {{0, -1}, {1, -6}, {2, -15}, {3, -20}, {4, -15}});
 
     UnivariateExprPolynomial e = UnivariateSeries::pow(a, 2, 4);
     UnivariateExprPolynomial f = UnivariateSeries::pow(b, 3, 5);

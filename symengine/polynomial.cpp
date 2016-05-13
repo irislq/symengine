@@ -361,7 +361,7 @@ UnivariatePolynomial::UnivariatePolynomial(const RCP<const Symbol> &var,
                                            const map_int_Expr &&dict)
     : degree_{degree}, var_{var}, dict_{std::move(dict)}
 {
-    SYMENGINE_ASSERT(is_canonical(degree_, dict_.get_dict()))
+    SYMENGINE_ASSERT(is_canonical(degree_, dict_))
 }
 
 UnivariatePolynomial::UnivariatePolynomial(const RCP<const Symbol> &var,
@@ -375,11 +375,12 @@ UnivariatePolynomial::UnivariatePolynomial(const RCP<const Symbol> &var,
     SYMENGINE_ASSERT(is_canonical(degree_, dict_))
 }
 
-bool UnivariatePolynomial::is_canonical(const int &degree_,
-                                        const UnivariateExprPolynomial &dict) const
+bool UnivariatePolynomial::is_canonical(
+    const int &degree_, const UnivariateExprPolynomial &dict) const
 {
     if (var_->get_name() == "")
-        if (!(dict.empty() or (dict.size() == 1 and dict.get_dict().begin()->first == 0)))
+        if (!(dict.empty()
+              or (dict.size() == 1 and dict.get_dict().begin()->first == 0)))
             return false;
 
     if (dict.size() != 0) {
@@ -410,8 +411,9 @@ std::size_t UnivariatePolynomial::__hash__() const
 bool UnivariatePolynomial::__eq__(const Basic &o) const
 {
     return eq(*var_, *(static_cast<const UnivariatePolynomial &>(o).var_))
-           and map_int_Expr_eq(
-                   dict_.get_dict(), static_cast<const UnivariatePolynomial &>(o).dict_.get_dict());
+           and map_int_Expr_eq(dict_.get_dict(),
+                               static_cast<const UnivariatePolynomial &>(o)
+                                   .dict_.get_dict());
 }
 
 int UnivariatePolynomial::compare(const Basic &o) const
@@ -523,13 +525,15 @@ bool UnivariatePolynomial::is_symbol() const
 bool UnivariatePolynomial::is_mul() const
 {
     return dict_.size() == 1 and dict_.get_dict().begin()->first != 0
-           and dict_.get_dict().begin()->second != 1 and dict_.get_dict().begin()->second != 0;
+           and dict_.get_dict().begin()->second != 1
+           and dict_.get_dict().begin()->second != 0;
 }
 
 bool UnivariatePolynomial::is_pow() const
 {
     return dict_.size() == 1 and dict_.get_dict().begin()->second == 1
-           and dict_.get_dict().begin()->first != 1 and dict_.get_dict().begin()->first != 0;
+           and dict_.get_dict().begin()->first != 1
+           and dict_.get_dict().begin()->first != 0;
 }
 
 RCP<const UnivariatePolynomial> add_uni_poly(const UnivariatePolynomial &a,

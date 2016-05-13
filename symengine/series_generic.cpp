@@ -22,8 +22,7 @@ RCP<const UnivariateSeries> UnivariateSeries::series(const RCP<const Basic> &t,
 
 std::size_t UnivariateSeries::__hash__() const
 {
-    return p_.__hash__()
-           + std::size_t(get_degree() * 84728863L);
+    return p_.__hash__() + std::size_t(get_degree() * 84728863L);
 }
 
 int UnivariateSeries::compare(const Basic &other) const
@@ -122,8 +121,7 @@ UnivariateSeries::pow(const UnivariateExprPolynomial &base, int exp,
         map_int_Expr dict;
         dict[-(base.get_dict().begin()->first)]
             = 1 / base.get_dict().begin()->second;
-        return pow(UnivariateExprPolynomial(dict),
-                   -exp, prec);
+        return pow(UnivariateExprPolynomial(dict), -exp, prec);
     }
     if (exp == 0) {
         if (base == 0 or base.get_dict().size() == 0) {

@@ -423,7 +423,8 @@ void StrPrinter::bvisit(const UnivariateSeries &x)
 {
     std::ostringstream o;
     bool first = true;
-    for(auto it = x.get_poly().get_dict().rbegin(); it != x.get_poly().get_dict().rend(); ++it) {
+    for (auto it = x.get_poly().get_dict().rbegin();
+         it != x.get_poly().get_dict().rend(); ++it) {
         std::string t;
         // if exponent is 0, then print only coefficient
         if (it->first == 0) {
@@ -455,7 +456,7 @@ void StrPrinter::bvisit(const UnivariateSeries &x)
             }
         }
         // if the coefficient of a term is 0, skip
-        else if(it->second == 0)
+        else if (it->second == 0)
             continue;
         // same logic is followed as above
         else {
@@ -484,8 +485,7 @@ void StrPrinter::bvisit(const UnivariateSeries &x)
         // corner cases of only first term handled successfully, switch the bool
         first = false;
     }
-    o << " + O(" << x.get_var() << "**" << x.get_degree()
-      << ")";
+    o << " + O(" << x.get_var() << "**" << x.get_degree() << ")";
     str_ = o.str();
 }
 
